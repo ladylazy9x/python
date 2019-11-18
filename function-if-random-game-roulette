@@ -1,0 +1,32 @@
+def roulette(guess,bet):
+  if bet<=0:
+    print('you should bet above 0')
+  print('let guess, you guess',guess)
+  result=random.randint(0,37)
+  
+  #result
+  if result==37:
+    print('the wheel land on 00')
+  else:
+    print('the wheel land on',result)
+  
+  #lost or win
+  if result%2==0 and result!=0 and guess=='even':
+    print('result is even, you won', bet,'dollars')
+    return bet
+    
+  elif result%2==1 and guess=='odd' and result!=37:
+    print('result is odd, you won', bet,'dollars')
+    return bet
+  
+  elif result == guess:
+    print('you won',bet*35,'dollars')
+    return bet*35
+  else:
+    print('you lost',bet,'dollars')
+    print('------')
+    return -bet
+  
+roulette('even',45)
+
+roulette(5,45)
