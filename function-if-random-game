@@ -1,0 +1,29 @@
+#4. cho han
+def cho_han(guess,bet):
+  #Makes sure your bet was above 0
+    if bet <= 0:
+        print("------------------")
+        print("Your bet should be above 0.")
+        print('Your money is',money)
+        return 0
+        print("------------------")
+    print('let guess, you guess',guess)
+    result1=random.randint(1,6)
+    result2=random.randint(1,6)
+    #print result:
+    if (result1+result2)%2==0:
+      print('result is even')
+    else:
+      print('result is odd')
+      
+    #win lose
+    if ((result1+result2)%2==0 and guess=='even')or ((result1+result2)%2==1 and guess=='odd'):
+        print('you won', bet,'dollars')
+    #elif (result1+result2)%2==1 and guess=='odd':
+        #print('you won', bet,'dollars')
+        return bet
+    else:
+        print('you lost', bet, 'dollars')
+
+      
+cho_han('Odd',40)
