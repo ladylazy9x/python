@@ -1,0 +1,52 @@
+import codecademylib
+import pandas as pd
+
+visits = pd.read_csv('visits.csv',
+                     parse_dates=[1])
+cart = pd.read_csv('cart.csv',
+                   parse_dates=[1])
+checkout = pd.read_csv('checkout.csv',
+                       parse_dates=[1])
+purchase = pd.read_csv('purchase.csv',
+                       parse_dates=[1])
+
+
+print(visits.head(),cart.head(),checkout.head(),purchase.head())
+
+visit_cart=pd.merge(visits,cart,how='left')
+print(visit_cart)
+print(len(visit_cart))
+
+cart_null=visit_cart[visit_cart.cart_time.isnull()]
+print(cart_null)
+percent_cart=cart_null.user_id.count()/visit_cart.user_id.count()*1.0
+print(percent_cart)
+percent_cart2=float(len(cart_null))/len(visit_cart)
+print(percent_cart2)
+
+cart_check=pd.merge(cart,checkout,how='left')
+check_null=cart_check[cart_check.checkout_time.isnull()]
+percent_check=float(len(check_null))/len(cart_check)
+print(percent_check)
+
+all_data= visits.merge(cart,how='left').merge(checkout,how='left').merge(purchase,how='left')
+print(all_data.head())
+print('len data',len(all_data))
+
+check_pur=pd.merge(checkout,purchase,how='left')
+print(check_pur)
+check_pur_row= len(check_pur)
+print(check_pur_row)
+not_purchase=len(check_pur[check_pur.purchase_time.isnull()])
+print(not_purchase)
+
+
+percent_notpur=float(not_purchase)/check_pur_row
+print(percent_notpur)
+
+all_data['time_to_purchase'] = \
+    all_data.purchase_time - \
+    all_data.visit_time
+print(all_data)
+
+print(all_data.time_to_purchase.mean())
