@@ -1,0 +1,45 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import codecademylib3_seaborn
+import glob
+
+globe=glob.glob('states*.csv')
+print(globe)
+
+us_census=[]
+
+for file in globe:
+  data=pd.read_csv(file)
+  us_census.append(data)
+
+#print(us_census)
+us_census=pd.concat(us_census)
+print(us_census)
+print(us_census.columns)
+print(us_census.dtypes)
+
+us_census.Income=us_census.Income.replace('\$','',regex=True)
+us_census.Income=pd.to_numeric(us_census.Income)
+us_census['Men']=us_census.GenderPop.str.split('_',expand=True)[0]
+#us_census['Men']=us_census.Men.str.get(0)
+us_census['Women']=us_census.GenderPop.str.split('_',expand=True)[1]
+#us_census['Women']=us_census.Women.str.get(1)'''
+us_census['Men']=us_census['Men'].replace('M','',regex=True)
+us_census['Men']=pd.to_numeric(us_census['Men'])
+us_census['Women']=us_census['Women'].replace('F','',regex=True)
+us_census['Women']=pd.to_numeric(us_census['Women'])
+us_census=us_census.fillna(value={'Women':us_census.TotalPop-us_census.Men})
+duplicates=us_census.duplicated()
+us_census=us_census.drop_duplicates()
+print(duplicates.value_counts())
+
+us_census.White=us_census.White.replace('%','',regex=True)
+us_census.White=pd.to_numeric(us_census.White)
+
+print(us_census.head())
+print(us_census.dtypes)
+print(us_census.columns)
+
+plt.scatter(us_census.Women,us_census.Income)
+plt.show()
